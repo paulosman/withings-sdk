@@ -1,6 +1,7 @@
 # Withings API Ruby Gem
 
-This gem provides access to data collected by [Withings](http://withings.com/) devices through their [HTTP API](https://oauth.withings.com/api/doc).
+This gem provides access to data collected by [Withings](http://withings.com/) devices through
+their [HTTP API](https://oauth.withings.com/api/doc).
 
 ## Installation
 
@@ -20,28 +21,70 @@ Or install it yourself as:
 
 ## Usage
 
-Before you can make requests to the Withings API, you must obtain an OAuth access token.
+### Authorization
+
+Withings uses OAuth 1.0a for API authorization. If you're unfamiliar with OAuth, you can
+[read about it here][bible] or you can [read the full spec][spec] if you're feeling brave.
+
+Before you can make requests to the Withings API, you must first obtain user authorization and
+generate an Access Token. Before you can write an application that uses the Withings API you
+must [register and obtain consumer credentials][register].
+
+The following examples assume you are using a web framework such as [Sinatra][sinatra].
+
+[register]: https://oauth.withings.com/partner/add "Withings Application Registration"
+[bible]: http://oauthbible.com/ "OAuth Bible"
+[spec]: http://oauth.net/core/1.0a/ "OAuth 1.0a Core Spec"
+[sinatra]: http://www.sinatrarb.com/ "Sinatra"
+
+```ruby
+client = Withings::Client.new({
+  consumer_key: 'YOUR_CONSUMER_KEY',
+  consumer_secret: 'YOUR_CONSUMER_SECRET'
+})
+
+request_token = client.request_token({
+  oauth_callback: 'YOUR_OAUTH_CALLBACK'
+})
+
+authorize_url = client.authorize_url(request_token.token, request_token.secret)
+redirect authorize_url
+```
+
+When the user has finished authorizing your application, they will be redirected
+to the callback URL you specified with the following parameters in the query string:
+```userid```, ```oauth_token``` and ```oauth_verifier```. Store these parameters as
+you'll need them later.
+
+```ruby
+client = Withings::Client.new({
+  consumer_key: 'YOUR_CONSUMER_KEY',
+  consumer_secret: 'YOUR_CONSUMER_SECRET'
+})
+
+client.access_token(request_token.token, request_token.secret, {
+  oauth_verifier: 'OAUTH_VERIFIER'
+})
+```
+
+## Making Requests
+
+Now that you have an authorized access token, you can create a ```Withings::Client``` instance:
 
 ```ruby
 client = Withings::Client.new do |config|
-  config.consumer_key    = 'YOUR_CONSUMER_KEY'
-  config.consumer_secret = 'YOUR_CONSUMER_SECRET'
-  config.callback_url    = 'YOUR_CALLBACK_URL'
+  config.consumer_key        = 'YOUR_CONSUMER_KEY'
+  config.consumer_secret     = 'YOUR_CONSUMER_SECRET'
+  config.token               = 'YOUR_ACCESS_TOKEN'
+  config.secret              = 'YOUR_ACCESS_TOKEN_SECRET'
 end
-```
-
-The id of the authenticated user will be provided in the query string of the request made to
-your callback URL.
-
-```ruby
-client.set_user_id(user_id)
 ```
 
 Now you can make authenticated requests on behalf of a user. For example, to get a list of
 activity measures, you can use the following example:
 
 ```ruby
-activities = client.activity_measures
+activities = client.activity_measures(user_id)
 activities.each do |activity|
   if activity.is_a?(Withings::ActivityMeasure)
     puts "Date: #{activity.date}, Steps: #{activity.steps}"
