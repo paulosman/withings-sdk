@@ -92,6 +92,7 @@ module Withings
       if @consumer_key.nil? || @consumer_secret.nil?
         raise Withings::Error::ClientConfigurationError, "Missing consumer_key or consumer_secret"
       end
+      options = Withings::Utils.normalize_date_params(options)
       request = Withings::HTTP::Request.new(@access_token, { 'User-Agent' => user_agent })
       response = request.send(http_method, path, options)
       if response.has_key? key
