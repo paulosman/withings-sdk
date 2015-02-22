@@ -3,6 +3,7 @@
 [![Build Status](http://img.shields.io/travis/paulosman/withings.svg)][travis]
 [![Code Climate](https://codeclimate.com/github/paulosman/withings/badges/gpa.svg)][codeclimate]
 [![Test Coverage](https://codeclimate.com/github/paulosman/withings/badges/coverage.svg)][coverage]
+[![Dependency Status](https://gemnasium.com/paulosman/withings.svg)][gemnasium]
 
 This gem provides access to data collected by [Withings](http://withings.com/) devices through
 their [HTTP API](https://oauth.withings.com/api/doc).
@@ -12,6 +13,7 @@ NOTE: This gem is a work in progress. It is not yet available via RubyGems.
 [travis]: https://travis-ci.org/paulosman/withings
 [codeclimate]: https://codeclimate.com/github/paulosman/withings
 [coverage]: https://codeclimate.com/github/paulosman/withings
+[gemnasium]: https://gemnasium.com/paulosman/withings
 
 ### TODO
 
