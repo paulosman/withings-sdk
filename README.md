@@ -84,9 +84,9 @@ Now you can make authenticated requests on behalf of a user. For example, to get
 activity measures, you can use the following example:
 
 ```ruby
-activities = client.activity_measures(user_id)
+activities = client.activities(user_id, { startdateymd: '2015-01-01', enddateymd: '2015-02-28' })
 activities.each do |activity|
-  if activity.is_a?(Withings::ActivityMeasure)
+  if activity.is_a?(Withings::Activity)
     puts "Date: #{activity.date}, Steps: #{activity.steps}"
   end
 end

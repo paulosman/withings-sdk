@@ -1,3 +1,8 @@
+require 'withings/error'
+require 'withings/http/request'
+
+require 'withings/activity'
+
 module Withings
   class Client
     include Withings::HTTP::OAuthClient
@@ -50,10 +55,6 @@ module Withings
       unless @token.nil? || @secret.nil?
         @access_token = existing_access_token(@token, @secret)
       end
-
-      if @consumer_key.nil? || @consumer_secret.nil?
-        raise ArgumentError, "Missing consumer_key or consumer_secret"
-      end
     end
 
     # Return the User-Agent string
@@ -63,20 +64,43 @@ module Withings
       @user_agent ||= "WithingsRubyGem/#{Withings::VERSION}"
     end
 
-    # Get a list of activity measures for the registered user
-    def activity_measures(user_id, date, options = {})
-      opts = {
+    # Get a list of activity measures for the specified user
+    #
+    # @param user_id [Integer]
+    # @param options [Hash]
+    #
+    # @return [Array<Withings::Activity>]
+    def activities(user_id, options = {})
+      perform_request(:get, '/v2/measure', Withings::Activity, 'activities', {
         action: 'getactivity',
-        userid: user_id,
-        date: date
-      }.merge(options)
-      response = Withings::HTTP::Request.new('GET', '/v2/measure', credentials, opts)
-      results = []
-      response.results.each do |result|
-        results << Withings::ActivityMeasure.new(result.date, result.steps)
-      end
-      results
+        userid: user_id
+      }.merge(options))
     end
 
+    private
+
+    # Helper function that handles all API requests
+    #
+    # @param http_method [Symbol]
+    # @param path [String]
+    # @param klass [Class]
+    # @param key [String]
+    # @param options [Hash]
+    #
+    # @return [Array<Object>]
+    def perform_request(http_method, path, klass, key, options = {})
+      if @consumer_key.nil? || @consumer_secret.nil?
+        raise Withings::Error::ClientConfigurationError, "Missing consumer_key or consumer_secret"
+      end
+      request = Withings::HTTP::Request.new(@access_token, { 'User-Agent' => user_agent })
+      response = request.send(http_method, path, options)
+      if response.has_key? key
+        response[key].collect do |element|
+          klass.new(element)
+        end
+      else
+        [klass.new(response)]
+      end
+    end
   end
 end

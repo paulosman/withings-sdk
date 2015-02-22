@@ -3,7 +3,7 @@ require 'oauth'
 module Withings
   module HTTP
     module OAuthClient
-      attr_accessor :consumer_key, :consumer_secret
+      attr_accessor :consumer_key, :consumer_secret, :token, :secret
 
       DEFAULT_OPTIONS = {
         site:              'https://oauth.withings.com',
@@ -33,7 +33,7 @@ module Withings
       end
 
       def existing_access_token(token, secret)
-        OAuth::AccessToken.new(token, secret)
+        OAuth::AccessToken.new(consumer, token, secret)
       end
       
       def connected?
@@ -43,6 +43,7 @@ module Withings
       private
       
       def consumer
+        @options[:scheme] = :query_string
         @consumer ||= OAuth::Consumer.new(@consumer_key, @consumer_secret, @options)
       end
     end
