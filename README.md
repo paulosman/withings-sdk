@@ -3,6 +3,13 @@
 This gem provides access to data collected by [Withings](http://withings.com/) devices through
 their [HTTP API](https://oauth.withings.com/api/doc).
 
+NOTE: This gem is a work in progress. It is not yet available via RubyGems.
+
+## TODO
+
+* Add support for non-activity measures (sleep, body measurements, etc)
+* Add support for notifications
+
 ## Installation
 
 Add this line to your application's Gemfile:
