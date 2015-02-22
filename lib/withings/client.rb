@@ -1,6 +1,8 @@
 module Withings
   class Client
     include Withings::HTTP::OAuthClient
+
+    attr_writer :user_agent
     
     # Initializes a new Client object used to communicate with the Withings API.
     #
@@ -52,6 +54,13 @@ module Withings
       if @consumer_key.nil? || @consumer_secret.nil?
         raise ArgumentError, "Missing consumer_key or consumer_secret"
       end
+    end
+
+    # Return the User-Agent string
+    #
+    # @return [String]
+    def user_agent
+      @user_agent ||= "WithingsRubyGem/#{Withings::VERSION}"
     end
 
     # Get a list of activity measures for the registered user

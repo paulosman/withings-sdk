@@ -43,5 +43,18 @@ describe Withings::Client do
     it 'has a consumer secret' do
       expect(@client.consumer_secret).not_to be nil
     end
+
+    describe '#user_agent' do
+      it 'defaults to WithingsRubyGem/version' do
+        expect(@client.user_agent).to eq("WithingsRubyGem/#{Withings::VERSION}")
+      end
+    end
+
+    describe '#user_agent=' do
+      it 'overwrites the User-Agent string' do
+        @client.user_agent = 'MyWithingsClient/1.0.0'
+        expect(@client.user_agent).to eq('MyWithingsClient/1.0.0')
+      end
+    end
   end
 end
