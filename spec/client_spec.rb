@@ -83,6 +83,22 @@ describe Withings::Client do
     end
   end
 
+  describe '#body_measurements' do
+    let (:user_id) { 123 }
+    let (:opts) { Hash['startdate', '2012-01-01', 'enddate', '2013-01-01'] }
+
+    before do
+      stub_request(:get, /.*wbsapi.*/).
+        with(query: hash_including({action: 'getmeas'})).
+        to_return(body: '{"status":0,"body":{"updatetime":123,"measuregrps":[{"grpid":123}]}}')
+    end
+
+    it 'should return an array of measurement groups' do
+      expect(configured_client.body_measurements(user_id, opts)).to be_an Array
+      expect(configured_client.body_measurements(user_id, opts).first).to be_an Withings::MeasurementGroup
+    end
+  end
+  
   context 'with an initialized client' do
     before do
       @client = Withings::Client.new do |config|

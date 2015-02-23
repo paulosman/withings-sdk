@@ -18,6 +18,7 @@ module Withings
       opts['startdateymd'] = to_ymd(opts['startdate'])      if opts.has_key? 'startdate'
       opts['enddateymd']   = to_ymd(opts['enddate'])        if opts.has_key? 'enddate'
 
+      opts['date']         = to_epoch(opts['date'])         if opts.has_key? 'date'
       opts
     end
 
