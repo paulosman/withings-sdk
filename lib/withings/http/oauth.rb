@@ -10,11 +10,10 @@ module Withings
         proxy:              nil,
         request_token_path: '/account/request_token',
         authorize_path:     '/account/authorize',
-        access_token_path:  '/account/access_token'
+        access_token_path:  '/account/access_token',
+        scheme:             :query_string
       }
     
-      @options = {}
-
       def request_token(options = {})
         consumer.get_request_token(options)
       end
@@ -43,8 +42,7 @@ module Withings
       private
       
       def consumer
-        @options[:scheme] = :query_string
-        @consumer ||= OAuth::Consumer.new(@consumer_key, @consumer_secret, @options)
+        @consumer ||= OAuth::Consumer.new(@consumer_key, @consumer_secret, DEFAULT_OPTIONS)
       end
     end
   end

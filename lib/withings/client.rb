@@ -44,12 +44,10 @@ module Withings
     #
     # @return [Withings::Client]
     def initialize(options = {})
-      @options ||= DEFAULT_OPTIONS.dup
-      @options.merge!(options)
-
-      @options.each do |key, value|
+      options.each do |key, value|
         instance_variable_set("@#{key}", value)
       end
+
       yield(self) if block_given?
 
       unless @token.nil? || @secret.nil?
