@@ -19,7 +19,7 @@ module Withings
         when Net::HTTPOK
           body = JSON.parse(response.body)
           if body['status'].to_i != 0
-            # TODO
+            raise Withings::Error::InvalidResponseError, "#{body['status']} - #{body['error']}"
           end
           body['body']
         else
