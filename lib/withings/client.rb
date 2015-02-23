@@ -2,6 +2,7 @@ require 'withings/error'
 require 'withings/http/request'
 
 require 'withings/activity'
+require 'withings/measurement_group'
 
 module Withings
   class Client
@@ -71,6 +72,19 @@ module Withings
     def activities(user_id, options = {})
       perform_request(:get, '/v2/measure', Withings::Activity, 'activities', {
         action: 'getactivity',
+        userid: user_id
+      }.merge(options))
+    end
+
+    # Get a list of body measurements taken by Withings devices
+    #
+    # @param user_id [Integer]
+    # @param options [Hash]
+    #
+    # @return [Array<Withings::MeasurementGroup>]
+    def body_measurements(user_id, options = {})
+      perform_request(:get, '/measure', Withings::MeasurementGroup, 'measuregrps', {
+        action: 'getmeas',
         userid: user_id
       }.merge(options))
     end

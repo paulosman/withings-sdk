@@ -2,6 +2,15 @@ require 'spec_helper'
 
 describe Withings::Client do
 
+  let (:configured_client) do
+    Withings::Client.new do |config|
+      config.consumer_key = 'foo'
+      config.consumer_secret = 'bar'
+      config.token = 'secret'
+      config.secret = 'super_secret'
+    end
+  end
+
   describe '#initialize' do
     context 'when an access token and secret are specified' do
       it 'should be connected' do
@@ -56,6 +65,37 @@ describe Withings::Client do
         @client = Withings::Client.new({ consumer_secret: 'foo' })
         expect { @client.activities(1234) }.to raise_error(Withings::Error::ClientConfigurationError)
       end
+    end
+    context 'when client is correctly configured' do
+      before do
+        stub_request(:get, /.*wbsapi.*/).
+          with(query: hash_including({action: 'getactivity'})).
+          to_return(body: '{"status":0,"body":{"activities":[{"date":"foo"}]}}')
+      end
+
+      let (:user_id) { 123 }
+      let (:opts) { Hash['date', '2012-01-01'] }
+
+      it 'should return an array of activities' do
+        expect(configured_client.activities(user_id, opts)).to be_an Array
+        expect(configured_client.activities(user_id, opts).first).to be_an Withings::Activity
+      end
+    end
+  end
+
+  describe '#body_measurements' do
+    let (:user_id) { 123 }
+    let (:opts) { Hash['startdate', '2012-01-01', 'enddate', '2013-01-01'] }
+
+    before do
+      stub_request(:get, /.*wbsapi.*/).
+        with(query: hash_including({action: 'getmeas'})).
+        to_return(body: '{"status":0,"body":{"updatetime":123,"measuregrps":[{"grpid":123}]}}')
+    end
+
+    it 'should return an array of measurement groups' do
+      expect(configured_client.body_measurements(user_id, opts)).to be_an Array
+      expect(configured_client.body_measurements(user_id, opts).first).to be_an Withings::MeasurementGroup
     end
   end
   
