@@ -2,6 +2,15 @@ require 'spec_helper'
 
 describe Withings::Client do
 
+  let (:configured_client) do
+    Withings::Client.new do |config|
+      config.consumer_key = 'foo'
+      config.consumer_secret = 'bar'
+      config.token = 'secret'
+      config.secret = 'super_secret'
+    end
+  end
+
   describe '#initialize' do
     context 'when an access token and secret are specified' do
       it 'should be connected' do
@@ -57,8 +66,23 @@ describe Withings::Client do
         expect { @client.activities(1234) }.to raise_error(Withings::Error::ClientConfigurationError)
       end
     end
+    context 'when client is correctly configured' do
+      before do
+        stub_request(:get, /.*wbsapi.*/).
+          with(query: hash_including({action: 'getactivity'})).
+          to_return(body: '{"status":0,"body":{"activities":[{"date":"foo"}]}}')
+      end
+
+      let (:user_id) { 123 }
+      let (:opts) { Hash['date', '2012-01-01'] }
+
+      it 'should return an array of activities' do
+        expect(configured_client.activities(user_id, opts)).to be_an Array
+        expect(configured_client.activities(user_id, opts).first).to be_an Withings::Activity
+      end
+    end
   end
-  
+
   context 'with an initialized client' do
     before do
       @client = Withings::Client.new do |config|
