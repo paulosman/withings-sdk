@@ -86,16 +86,29 @@ describe Withings::Client do
   describe '#body_measurements' do
     let (:user_id) { 123 }
     let (:opts) { Hash['startdate', '2012-01-01', 'enddate', '2013-01-01'] }
+    let (:results) { configured_client.body_measurements(user_id, opts) }
 
     before do
       stub_request(:get, /.*wbsapi.*/).
         with(query: hash_including({action: 'getmeas'})).
-        to_return(body: '{"status":0,"body":{"updatetime":123,"measuregrps":[{"grpid":123}]}}')
+        to_return(body: '{"status":0,"body":{"updatetime":123,"measuregrps":[{"grpid":123,"measures":[{"type":11,"value":70,"unit":0},{"type":1,"value":87839,"unit":-3}]}]}}')
     end
 
     it 'should return an array of measurement groups' do
-      expect(configured_client.body_measurements(user_id, opts)).to be_an Array
-      expect(configured_client.body_measurements(user_id, opts).first).to be_an Withings::MeasurementGroup
+      expect(results).to be_an Array
+      expect(results.first).to be_an Withings::MeasurementGroup
+    end
+
+    context 'each measurement group' do
+      it 'should contain measurements of the correct type' do
+        expect(results.first.measures[0]).to be_an Withings::Measure::Pulse
+        expect(results.first.measures[1]).to be_an Withings::Measure::Weight
+      end
+
+      it 'should normalize the values as floats' do
+        expect(results.first.measures[0].value).to eq(70.0)
+        expect(results.first.measures[1].value).to eq(87.839)
+      end
     end
   end
   
