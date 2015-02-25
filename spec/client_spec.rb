@@ -53,32 +53,48 @@ describe Withings::Client do
   end
   
   describe '#activities' do
+    let (:user_id) { 123 }
+    let (:opts) { Hash['date', '2012-01-01'] }
+
     context 'when no consumer secret is provided' do
       it 'raises an error' do
         @client = Withings::Client.new({ consumer_key: 'foo' })
-        expect { @client.activities(1234) }.to raise_error(Withings::Error::ClientConfigurationError)
+        expect { @client.activities(user_id) }.to raise_error(Withings::Error::ClientConfigurationError)
       end
     end
 
     context 'when no consumer key is specified' do
       it 'raises an error' do
         @client = Withings::Client.new({ consumer_secret: 'foo' })
-        expect { @client.activities(1234) }.to raise_error(Withings::Error::ClientConfigurationError)
+        expect { @client.activities(user_id) }.to raise_error(Withings::Error::ClientConfigurationError)
       end
     end
+
     context 'when client is correctly configured' do
+      let (:results) { configured_client.activities(user_id, opts) }
+
       before do
         stub_request(:get, /.*wbsapi.*/).
           with(query: hash_including({action: 'getactivity'})).
           to_return(body: '{"status":0,"body":{"activities":[{"date":"foo"}]}}')
       end
 
-      let (:user_id) { 123 }
-      let (:opts) { Hash['date', '2012-01-01'] }
-
       it 'should return an array of activities' do
-        expect(configured_client.activities(user_id, opts)).to be_an Array
-        expect(configured_client.activities(user_id, opts).first).to be_an Withings::Activity
+        expect(results).to be_an Array
+        expect(results.first).to be_a Withings::Activity
+      end
+
+      context 'when one result is returned (a single day)' do
+        before do
+          stub_request(:get, /.*wbsapi.*/).
+            to_return(body: '{"status":0,"body":{"date":"2013-04-10","steps":2453}}')
+        end
+
+        it 'should return an array with one single activity' do
+          expect(results).to be_an Array
+          expect(results.length).to eq(1)
+          expect(results.first).to be_an Withings::Activity
+        end
       end
     end
   end
