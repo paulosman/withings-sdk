@@ -29,8 +29,8 @@ module Withings
       # Return weight measurement in pounds
       #
       # @return [Float]
-      def in_lbs
-        @value * 2.20462
+      def in_lb
+        (@value * 2.20462).round(3)
       end
     end
     
