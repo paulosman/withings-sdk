@@ -17,8 +17,9 @@ NOTE: This gem is a work in progress. It is not yet available via RubyGems.
 
 ### TODO
 
-* Add support for non-activity measures (sleep, body measurements, etc)
-* Add support for notifications
+* Sleep Summary
+* Intraday Activity Measures
+* Notifications
 
 ## Installation
 

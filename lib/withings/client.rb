@@ -3,6 +3,7 @@ require 'withings/http/request'
 
 require 'withings/activity'
 require 'withings/measurement_group'
+require 'withings/sleep_series'
 
 module Withings
   class Client
@@ -85,6 +86,19 @@ module Withings
     def body_measurements(user_id, options = {})
       perform_request(:get, '/measure', Withings::MeasurementGroup, 'measuregrps', {
         action: 'getmeas',
+        userid: user_id
+      }.merge(options))
+    end
+
+    # Get details about a user's sleep
+    #
+    # @param user_id [Integer]
+    # @param options [Hash]
+    #
+    # @return [Array<Withings::Sleep>]
+    def sleep_series(user_id, options = {})
+      perform_request(:get, '/v2/sleep', Withings::SleepSeries, 'series', {
+        action: 'get',
         userid: user_id
       }.merge(options))
     end
