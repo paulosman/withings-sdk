@@ -127,6 +127,26 @@ describe Withings::Client do
       end
     end
   end
+
+  describe '#sleep_series' do
+    let (:user_id) { 123 }
+    let (:opts) { Hash['startdate', '2012-01-01', 'enddate', '2013-01-01'] }
+    let (:results) { configured_client.sleep_series(user_id, opts) }
+
+    before do
+      stub_request(:get, /.*wbsapi.*/).
+        with(query: hash_including({action: 'get'})).
+        to_return(body: '{"status":0,"body":{"series":[{"startdate":1387235398,"state":0,"enddate":1387235758},{"startdate":1387243618,"state":1,"enddate":1387244518}],"model":16}}')
+    end
+
+    context 'with properly configured client' do
+      it 'should return an array of Withings::SleepSeries objects' do
+        expect(results).to be_an Array
+        expect(results.length).to eq(2)
+        expect(results[0]).to be_a Withings::SleepSeries
+      end
+    end
+  end
   
   context 'with an initialized client' do
     before do
