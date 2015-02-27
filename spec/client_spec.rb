@@ -156,8 +156,14 @@ describe Withings::Client do
 
     before do
       stub_request(:get, /.*wbsapi.*/).
-        with(query: hash_including({action: 'get'})).
+        with(query: hash_including({action: 'getsummary'})).
         to_return(body: fixture('sleep_summary.json'))
+    end
+
+    context 'with properly configured client' do
+      it 'should return an array of Withings::SleepSummary objects' do
+        expect(results.first).to be_a Withings::SleepSummary
+      end
     end
   end
   
