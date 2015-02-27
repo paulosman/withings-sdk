@@ -2,22 +2,12 @@ require 'date'
 
 module Withings
   module Utils
+
     def self.normalize_date_params(options)
-      opts = options.dup
+      opts = hash_with_string_date_keys(options)
 
-      [:startdateymd, :enddateymd, :startdate, :enddate, :lastdate].each do |key|
-        if opts.has_key? key
-          opts[key.to_s] = opts[key]
-          opts.delete(key)
-        end
-      end
-
-      opts['startdateymd'] = to_ymd(opts['startdateymd'])   if opts.has_key? 'startdateymd'
-      opts['enddateymd']   = to_ymd(opts['enddateymd'])     if opts.has_key? 'enddateymd'
-
-      opts['startdate']    = to_epoch(opts['startdate'])    if opts.has_key? 'startdate'
-      opts['enddate']      = to_epoch(opts['enddate'])      if opts.has_key? 'enddate'
-      opts['lastupdate']   = to_epoch(opts['lastupdate'])   if opts.has_key? 'lastupdate'
+      convert_epoch_date_params!(opts)
+      convert_ymd_date_params!(opts)
 
       if opts.has_key? 'startdateymd' and !opts.has_key? 'startdate'
         opts['startdate'] = to_epoch(opts['startdateymd'])
@@ -28,12 +18,31 @@ module Withings
 
       opts['startdateymd'] = to_ymd(opts['startdate'])      if opts.has_key? 'startdate'
       opts['enddateymd']   = to_ymd(opts['enddate'])        if opts.has_key? 'enddate'
-
-      opts['date']         = to_epoch(opts['date'])         if opts.has_key? 'date'
       opts
     end
 
     private
+
+    def self.hash_with_string_date_keys(params)
+      p = params.dup
+      date_fields = [:startdateymd, :enddateymd, :startdate, :enddate, :lastupdate]
+      date_fields.each { |key| p[key.to_s] = p.delete(key) if p.has_key? key }
+      p
+    end
+
+    def self.convert_ymd_date_params!(params)
+      ymd_fields = ['startdateymd', 'enddateymd']
+      ymd_fields.each do |key|
+        params[key] = to_ymd(params[key]) if params.has_key? key
+      end
+    end
+
+    def self.convert_epoch_date_params!(params)
+      epoch_fields = ['startdate', 'enddate', 'lastdate', 'date']
+      epoch_fields.each do |key|
+        params[key] = to_epoch(params[key]) if params.has_key? key
+      end
+    end
 
     def self.to_epoch(d)
       if d.is_a? Date or d.is_a? DateTime
