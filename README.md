@@ -17,7 +17,6 @@ NOTE: This gem is a work in progress. It is not yet available via RubyGems.
 
 ### TODO
 
-* Sleep Summary
 * Intraday Activity Measures
 * Notifications
 

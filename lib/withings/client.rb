@@ -4,6 +4,7 @@ require 'withings/http/request'
 require 'withings/activity'
 require 'withings/measurement_group'
 require 'withings/sleep_series'
+require 'withings/sleep_summary'
 
 module Withings
   class Client
@@ -100,6 +101,24 @@ module Withings
       perform_request(:get, '/v2/sleep', Withings::SleepSeries, 'series', {
         action: 'get',
         userid: user_id
+      }.merge(options))
+    end
+
+    # Get a summary of a user's night. Includes the total time they slept,
+    # how long it took them to fall asleep, how long it took them to fall
+    # asleep, etc.
+    #
+    # NOTE: user_id isn't actually used in this API call (so I assume it is
+    # derived from the OAuth credentials) but I was uncomfortable introducing
+    # this inconsitency into this gem.
+    #
+    # @param user_id [Intger]
+    # @param options [Hash]
+    #
+    # @return [Array<Withings::SleepSummary>]
+    def sleep_summary(user_id, options = {})
+      perform_request(:get, '/v2/sleep', Withings::SleepSummary, 'series', {
+        action: 'getsummary'
       }.merge(options))
     end
 

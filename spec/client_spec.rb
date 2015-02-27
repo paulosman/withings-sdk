@@ -147,6 +147,19 @@ describe Withings::Client do
       end
     end
   end
+
+  describe '#sleep_summary' do
+    let (:user_id) { 123 }
+
+    let (:opts) { Hash['startdate', '2012-01-01', 'enddate', '2013-01-01'] }
+    let (:results) { configured_client.sleep_summary(user_id, opts) }
+
+    before do
+      stub_request(:get, /.*wbsapi.*/).
+        with(query: hash_including({action: 'get'})).
+        to_return(body: fixture('sleep_summary.json'))
+    end
+  end
   
   context 'with an initialized client' do
     before do
