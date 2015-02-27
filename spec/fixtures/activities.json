@@ -1,0 +1,9 @@
+{"status":0,
+ "body": {
+     "activities":
+     [
+         {"date":"2013-10-06","steps":10233,"distance":7439.44,"calories":530.79,"elevation":808.24,"soft":9240,"moderate":960,"intense":0,"timezone":"Europe/Berlin"},
+         {"date":"2012-01-01","steps":12345,"distance":8321.34,"calories":670.40,"elevation":800.32,"soft":9100,"moderate":103,"intense":0,"timezone":"Europe/Berlin"}
+     ]
+ }
+}

@@ -76,7 +76,7 @@ describe Withings::Client do
       before do
         stub_request(:get, /.*wbsapi.*/).
           with(query: hash_including({action: 'getactivity'})).
-          to_return(body: '{"status":0,"body":{"activities":[{"date":"foo"}]}}')
+          to_return(body: fixture('activities.json'))
       end
 
       it 'should return an array of activities' do
@@ -87,7 +87,7 @@ describe Withings::Client do
       context 'when one result is returned (a single day)' do
         before do
           stub_request(:get, /.*wbsapi.*/).
-            to_return(body: '{"status":0,"body":{"date":"2013-04-10","steps":2453}}')
+            to_return(body: fixture('activity_single_day.json'))
         end
 
         it 'should return an array with one single activity' do
@@ -107,7 +107,7 @@ describe Withings::Client do
     before do
       stub_request(:get, /.*wbsapi.*/).
         with(query: hash_including({action: 'getmeas'})).
-        to_return(body: '{"status":0,"body":{"updatetime":123,"measuregrps":[{"grpid":123,"measures":[{"type":11,"value":70,"unit":0},{"type":1,"value":87839,"unit":-3}]}]}}')
+        to_return(body: fixture('body_measurements.json'))
     end
 
     it 'should return an array of measurement groups' do
@@ -136,7 +136,7 @@ describe Withings::Client do
     before do
       stub_request(:get, /.*wbsapi.*/).
         with(query: hash_including({action: 'get'})).
-        to_return(body: '{"status":0,"body":{"series":[{"startdate":1387235398,"state":0,"enddate":1387235758},{"startdate":1387243618,"state":1,"enddate":1387244518}],"model":16}}')
+        to_return(body: fixture('sleep_series.json'))
     end
 
     context 'with properly configured client' do
