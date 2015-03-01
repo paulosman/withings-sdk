@@ -107,6 +107,29 @@ activities.each do |activity|
   end
 end
 ```
+## Dates
+
+Many of the Withings API endpoints accept a date parameter in either YYYY-MM-DD format or as a
+unix epoch. This gem tries to simplify date handling by allowing you to specify either, or a
+```Date``` or ```DateTime``` instance. For example:
+
+```ruby
+client = Withings::Client.new { options }
+sleep_details = client.sleep_series(user_id, {
+  startdate: DateTime.new(2015, 2, 20, 12, 0, 0),
+  enddate: DateTime.new(2015, 2, 21, 12, 20, 0)
+})
+```
+
+Or equivalently,
+
+```ruby
+client = Withings::Client.new { options }
+sleep_details = client.sleep_series(user_id, {
+  startdate: '2015-02-20',
+  enddate: '2015-02-21'
+})
+```
 
 ## Development
 
