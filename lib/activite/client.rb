@@ -1,14 +1,13 @@
-require 'withings/error'
-require 'withings/http/request'
+require 'activite/error'
+require 'activite/http/request'
+require 'activite/activity'
+require 'activite/measurement_group'
+require 'activite/sleep_series'
+require 'activite/sleep_summary'
 
-require 'withings/activity'
-require 'withings/measurement_group'
-require 'withings/sleep_series'
-require 'withings/sleep_summary'
-
-module Withings
+module Activite
   class Client
-    include Withings::HTTP::OAuthClient
+    include Activite::HTTP::OAuthClient
 
     attr_writer :user_agent
     
@@ -27,10 +26,10 @@ module Withings
     # @option options [String] :secret The access token secret (if you've stored it)
     #
     # @example User has not yet authorized access to their Withings account
-    #   client = Withings::Client.new({ consumer_key: your_key, consumer_secret: your_secret })
+    #   client = Activite::Client.new({ consumer_key: your_key, consumer_secret: your_secret })
     #
     # @example User has authorized access to their Withings account
-    #   client = Withings::Client.new({
+    #   client = Activite::Client.new({
     #     consumer_key: your_key,
     #     consumer_secret: your_secret,
     #     token: your_access_token,
@@ -38,14 +37,14 @@ module Withings
     #   })
     #
     # @example You can also pass parameters as a block
-    #   client = Withings::Client.new do |config|
+    #   client = Activite::Client.new do |config|
     #     config.consumer_key = your_key
     #     config.consumer_secret = your_secret
     #     config.token = token
     #     config.secret = secret
     #   end
     #
-    # @return [Withings::Client]
+    # @return [Activite::Client]
     def initialize(options = {})
       options.each do |key, value|
         instance_variable_set("@#{key}", value)
@@ -62,7 +61,7 @@ module Withings
     #
     # @return [String]
     def user_agent
-      @user_agent ||= "WithingsRubyGem/#{Withings::VERSION}"
+      @user_agent ||= "WithingsRubyGem/#{Activite::VERSION}"
     end
 
     # Get a list of activity measures for the specified user
@@ -70,9 +69,9 @@ module Withings
     # @param user_id [Integer]
     # @param options [Hash]
     #
-    # @return [Array<Withings::Activity>]
+    # @return [Array<Activite::Activity>]
     def activities(user_id, options = {})
-      perform_request(:get, '/v2/measure', Withings::Activity, 'activities', {
+      perform_request(:get, '/v2/measure', Activite::Activity, 'activities', {
         action: 'getactivity',
         userid: user_id
       }.merge(options))
@@ -83,9 +82,9 @@ module Withings
     # @param user_id [Integer]
     # @param options [Hash]
     #
-    # @return [Array<Withings::MeasurementGroup>]
+    # @return [Array<Activite::MeasurementGroup>]
     def body_measurements(user_id, options = {})
-      perform_request(:get, '/measure', Withings::MeasurementGroup, 'measuregrps', {
+      perform_request(:get, '/measure', Activite::MeasurementGroup, 'measuregrps', {
         action: 'getmeas',
         userid: user_id
       }.merge(options))
@@ -96,9 +95,9 @@ module Withings
     # @param user_id [Integer]
     # @param options [Hash]
     #
-    # @return [Array<Withings::Sleep>]
+    # @return [Array<Activite::Sleep>]
     def sleep_series(user_id, options = {})
-      perform_request(:get, '/v2/sleep', Withings::SleepSeries, 'series', {
+      perform_request(:get, '/v2/sleep', Activite::SleepSeries, 'series', {
         action: 'get',
         userid: user_id
       }.merge(options))
@@ -115,9 +114,9 @@ module Withings
     # @param user_id [Intger]
     # @param options [Hash]
     #
-    # @return [Array<Withings::SleepSummary>]
+    # @return [Array<Activite::SleepSummary>]
     def sleep_summary(user_id, options = {})
-      perform_request(:get, '/v2/sleep', Withings::SleepSummary, 'series', {
+      perform_request(:get, '/v2/sleep', Activite::SleepSummary, 'series', {
         action: 'getsummary'
       }.merge(options))
     end
@@ -135,10 +134,10 @@ module Withings
     # @return [Array<Object>]
     def perform_request(http_method, path, klass, key, options = {})
       if @consumer_key.nil? || @consumer_secret.nil?
-        raise Withings::Error::ClientConfigurationError, "Missing consumer_key or consumer_secret"
+        raise Activite::Error::ClientConfigurationError, "Missing consumer_key or consumer_secret"
       end
-      options = Withings::Utils.normalize_date_params(options)
-      request = Withings::HTTP::Request.new(@access_token, { 'User-Agent' => user_agent })
+      options = Activite::Utils.normalize_date_params(options)
+      request = Activite::HTTP::Request.new(@access_token, { 'User-Agent' => user_agent })
       response = request.send(http_method, path, options)
       if response.has_key? key
         response[key].collect do |element|

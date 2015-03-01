@@ -5,5 +5,5 @@ group :test do
   gem 'webmock', '~> 1.2'
 end
 
-# Specify your gem's dependencies in withings.gemspec
+# Specify your gem's dependencies in activite.gemspec
 gemspec

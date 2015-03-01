@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Withings::Client do
+describe Activite::Client do
 
   let (:configured_client) do
-    Withings::Client.new do |config|
+    Activite::Client.new do |config|
       config.consumer_key = 'foo'
       config.consumer_secret = 'bar'
       config.token = 'secret'
@@ -14,7 +14,7 @@ describe Withings::Client do
   describe '#initialize' do
     context 'when an access token and secret are specified' do
       it 'should be connected' do
-        client = Withings::Client.new({
+        client = Activite::Client.new({
           consumer_key: 'foo',
           consumer_secret: 'bar',
           token: 'token',
@@ -41,7 +41,7 @@ describe Withings::Client do
   
   describe '#user_agent' do
     it 'defaults to WithingsRubyGem/version' do
-      expect(subject.user_agent).to eq("WithingsRubyGem/#{Withings::VERSION}")
+      expect(subject.user_agent).to eq("WithingsRubyGem/#{Activite::VERSION}")
     end
   end
 
@@ -58,15 +58,15 @@ describe Withings::Client do
 
     context 'when no consumer secret is provided' do
       it 'raises an error' do
-        @client = Withings::Client.new({ consumer_key: 'foo' })
-        expect { @client.activities(user_id) }.to raise_error(Withings::Error::ClientConfigurationError)
+        @client = Activite::Client.new({ consumer_key: 'foo' })
+        expect { @client.activities(user_id) }.to raise_error(Activite::Error::ClientConfigurationError)
       end
     end
 
     context 'when no consumer key is specified' do
       it 'raises an error' do
-        @client = Withings::Client.new({ consumer_secret: 'foo' })
-        expect { @client.activities(user_id) }.to raise_error(Withings::Error::ClientConfigurationError)
+        @client = Activite::Client.new({ consumer_secret: 'foo' })
+        expect { @client.activities(user_id) }.to raise_error(Activite::Error::ClientConfigurationError)
       end
     end
 
@@ -81,7 +81,7 @@ describe Withings::Client do
 
       it 'should return an array of activities' do
         expect(results).to be_an Array
-        expect(results.first).to be_a Withings::Activity
+        expect(results.first).to be_a Activite::Activity
       end
 
       context 'when one result is returned (a single day)' do
@@ -93,7 +93,7 @@ describe Withings::Client do
         it 'should return an array with one single activity' do
           expect(results).to be_an Array
           expect(results.length).to eq(1)
-          expect(results.first).to be_an Withings::Activity
+          expect(results.first).to be_an Activite::Activity
         end
       end
     end
@@ -112,13 +112,13 @@ describe Withings::Client do
 
     it 'should return an array of measurement groups' do
       expect(results).to be_an Array
-      expect(results.first).to be_an Withings::MeasurementGroup
+      expect(results.first).to be_an Activite::MeasurementGroup
     end
 
     context 'each measurement group' do
       it 'should contain measurements of the correct type' do
-        expect(results.first.measures[0]).to be_an Withings::Measure::Pulse
-        expect(results.first.measures[1]).to be_an Withings::Measure::Weight
+        expect(results.first.measures[0]).to be_an Activite::Measure::Pulse
+        expect(results.first.measures[1]).to be_an Activite::Measure::Weight
       end
 
       it 'should normalize the values as floats' do
@@ -140,10 +140,10 @@ describe Withings::Client do
     end
 
     context 'with properly configured client' do
-      it 'should return an array of Withings::SleepSeries objects' do
+      it 'should return an array of Activite::SleepSeries objects' do
         expect(results).to be_an Array
         expect(results.length).to eq(2)
-        expect(results[0]).to be_a Withings::SleepSeries
+        expect(results[0]).to be_a Activite::SleepSeries
       end
     end
   end
@@ -161,15 +161,15 @@ describe Withings::Client do
     end
 
     context 'with properly configured client' do
-      it 'should return an array of Withings::SleepSummary objects' do
-        expect(results.first).to be_a Withings::SleepSummary
+      it 'should return an array of Activite::SleepSummary objects' do
+        expect(results.first).to be_a Activite::SleepSummary
       end
     end
   end
   
   context 'with an initialized client' do
     before do
-      @client = Withings::Client.new do |config|
+      @client = Activite::Client.new do |config|
         config.consumer_key = 'foo'
         config.consumer_secret = 'bar'
       end

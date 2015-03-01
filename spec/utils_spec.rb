@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Withings::Utils do
+describe Activite::Utils do
 
   let (:startdateymd) { Hash['startdateymd', '2012-01-01'] }
   let (:startdate)    { Hash['startdate',    1325376000 ] }

@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Withings::HTTP::Request do
+describe Activite::HTTP::Request do
   subject do
     consumer = OAuth::Consumer.new('key', 'secret')
     token = OAuth::AccessToken.new(consumer, 'foo', 'bar')
-    Withings::HTTP::Request.new(token, {})
+    Activite::HTTP::Request.new(token, {})
   end
 
   context 'when an API error is returned' do
@@ -13,7 +13,7 @@ describe Withings::HTTP::Request do
         to_return(body: '{"status":1,"error":"the bad happened"}')
     end
     it 'should raise an error' do
-      expect { subject.get('/foo') }.to raise_error(Withings::Error::InvalidResponseError)
+      expect { subject.get('/foo') }.to raise_error(Activite::Error::InvalidResponseError)
     end
   end
 
@@ -26,7 +26,7 @@ describe Withings::HTTP::Request do
       end
     end
     it 'should raise an error' do
-      expect { subject.get('/foo') }.to raise_error(Withings::Error::ClientConfigurationError)
+      expect { subject.get('/foo') }.to raise_error(Activite::Error::ClientConfigurationError)
     end
   end
 end

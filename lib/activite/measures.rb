@@ -1,4 +1,4 @@
-module Withings
+module Activite
   class Measure < Base
 
     # Create a new instance.
@@ -8,7 +8,7 @@ module Withings
     # example, value=20 and unit=-1 should be 2.0.
     #
     # @param attrs [Hash]
-    # @return [Withings::Measure]
+    # @return [Activite::Measure]
     def initialize(attrs = {})
       super(attrs)
       @value = value / (10 ** unit.abs).to_f

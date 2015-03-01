@@ -1,6 +1,6 @@
 require 'date'
 
-module Withings
+module Activite
   module Utils
 
     def self.normalize_date_params(options)

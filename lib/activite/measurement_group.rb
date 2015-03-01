@@ -1,24 +1,24 @@
-require 'withings/measures'
+require 'activite/measures'
 
-module Withings
+module Activite
   class MeasurementGroup < Base
     # Types of body measurements collected by Withings devices and supported
     # by this gem. See http://oauth.withings.com/api/doc#api-Measure-get_measure
     # for details.
     TYPES = {
-      1  => Withings::Measure::Weight,
-      4  => Withings::Measure::Height,
-      5  => Withings::Measure::FatFreeMass,
-      6  => Withings::Measure::FatRatio,
-      8  => Withings::Measure::FatMassWeight,
-      11 => Withings::Measure::Pulse
+      1  => Activite::Measure::Weight,
+      4  => Activite::Measure::Height,
+      5  => Activite::Measure::FatFreeMass,
+      6  => Activite::Measure::FatRatio,
+      8  => Activite::Measure::FatMassWeight,
+      11 => Activite::Measure::Pulse
     }
 
     # Create a new instance with a collection of measurements of the appropriate
-    # Withings::Measure type.
+    # Activite::Measure type.
     #
     # @param attrs [Hash]
-    # @return [Withings::MeasurementGroup]
+    # @return [Activite::MeasurementGroup]
     def initialize(attrs = {})
       super(attrs)
       return if attrs['measures'].nil?

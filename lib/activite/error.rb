@@ -1,4 +1,4 @@
-module Withings
+module Activite
   # Custom errors for rescuing from Withings API errors
   class Error < StandardError
     # @return [Integer]

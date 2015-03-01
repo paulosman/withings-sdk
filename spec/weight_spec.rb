@@ -1,6 +1,6 @@
-describe Withings::Measure::Weight do
+describe Activite::Measure::Weight do
 
-  let (:subject) { Withings::Measure::Weight.new(value: 87893, unit: -3) }
+  let (:subject) { Activite::Measure::Weight.new(value: 87893, unit: -3) }
 
   it 'should normalize the value based on the value and the unit' do
     expect(subject.value).to eq(87.893)
