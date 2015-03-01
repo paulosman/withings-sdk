@@ -8,8 +8,6 @@
 This gem provides access to data collected by [Withings](http://withings.com/) devices through
 their [HTTP API](https://oauth.withings.com/api/doc).
 
-NOTE: This gem is a work in progress. It is not yet available via RubyGems.
-
 [travis]: https://travis-ci.org/paulosman/activite
 [codeclimate]: https://codeclimate.com/github/paulosman/activite
 [coverage]: https://codeclimate.com/github/paulosman/activite
