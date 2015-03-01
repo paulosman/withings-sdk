@@ -4,6 +4,7 @@
 [![Code Climate](https://codeclimate.com/github/paulosman/activite/badges/gpa.svg)][codeclimate]
 [![Test Coverage](https://codeclimate.com/github/paulosman/activite/badges/coverage.svg)][coverage]
 [![Dependency Status](https://gemnasium.com/paulosman/activite.svg)][gemnasium]
+[![Gem Version](https://badge.fury.io/rb/activite.svg)][gemversion]
 
 This gem provides access to data collected by [Withings](http://withings.com/) devices through
 their [HTTP API](https://oauth.withings.com/api/doc).
@@ -12,6 +13,7 @@ their [HTTP API](https://oauth.withings.com/api/doc).
 [codeclimate]: https://codeclimate.com/github/paulosman/activite
 [coverage]: https://codeclimate.com/github/paulosman/activite
 [gemnasium]: https://gemnasium.com/paulosman/activite
+[gemversion]: https://badge.fury.io/rb/activite
 
 ### TODO
 
