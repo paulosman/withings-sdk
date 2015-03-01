@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'withings/version'
+require 'activite/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "withings"
-  spec.version       = Withings::VERSION
+  spec.name          = "activite"
+  spec.version       = Activite::VERSION
   spec.authors       = ["Paul Osman"]
   spec.email         = ["paul@eval.ca"]
 
   spec.summary       = 'A Ruby interface to the Withings API.'
   spec.description   = spec.summary
-  spec.homepage      = 'https://github.com/paulosman/withings'
+  spec.homepage      = 'https://github.com/paulosman/activite'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

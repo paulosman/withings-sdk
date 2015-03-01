@@ -7,7 +7,7 @@ if ENV['CODECLIMATE_REPO_TOKEN']
 end
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'withings'
+require 'activite'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |c|
