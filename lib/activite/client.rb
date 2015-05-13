@@ -12,7 +12,7 @@ module Activite
     include Activite::HTTP::OAuthClient
 
     attr_writer :user_agent
-    
+
     # Initializes a new Client object used to communicate with the Withings API.
     #
     # An authenticated Client can be created with an access token and access token
@@ -111,7 +111,7 @@ module Activite
     #
     # NOTE: user_id isn't actually used in this API call (so I assume it is
     # derived from the OAuth credentials) but I was uncomfortable introducing
-    # this inconsitency into this gem.
+    # this inconsistency into this gem.
     #
     # @param user_id [Intger]
     # @param options [Hash]

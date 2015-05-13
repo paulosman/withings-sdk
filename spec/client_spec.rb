@@ -51,7 +51,7 @@ describe Activite::Client do
       expect(subject.user_agent).to eq('MyWithingsClient/1.0.0')
     end
   end
-  
+
   describe '#activities' do
     let (:user_id) { 123 }
     let (:opts) { Hash['date', '2012-01-01'] }
@@ -221,6 +221,22 @@ describe Activite::Client do
         end
         it 'should have status 0' do
           expect(result.status).to equal(0)
+        end
+      end
+    end
+
+    describe '#get_notification' do
+      let (:result) { configured_client.get_notification(user_id, opts) }
+
+      before do
+        stub_request(:get, /.*wbsapi.*/).
+          with(query: hash_including({action: 'get'})).
+          to_return(body: fixture('notification.json'))
+      end
+
+      context 'with properly configured client' do
+        it 'should return a single Activite::Notification object' do
+          expect(result).to be_a Activite::Notification
         end
       end
     end

@@ -39,6 +39,7 @@ module Activite
           raise Activite::Error::ClientConfigurationError, response.body
         end
         body = JSON.parse(response.body)
+        puts body
         if body['status'].to_i != 0
           raise Activite::Error::InvalidResponseError, "#{body['status']} - #{body['error']}"
         end
