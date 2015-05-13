@@ -26,27 +26,35 @@ module Activite
         return URI.encode(hash.map{|k,v| "#{k}=#{v}"}.join("&"))
       end
 
+      def request_with_body(method, path, options = {})
+        body = hash_to_query(options)
+        uri  = "#{BASE_URI}#{path}"
+        @access_token.send(method, uri, body, @headers)
+      end
+
+      def request_with_query_string(method, path, options = {})
+        uri = "#{BASE_URI}#{path}?#{hash_to_query(options)}"
+        @access_token.send(method, uri, @headers)
+      end
+
       def request(method, path, options = {})
         if [:post, :put].include? method
-          body = hash_to_query(options)
-          uri = "#{BASE_URI}#{path}"
-          response = @access_token.send(method, uri, body, @headers)
+          response = request_with_body(method, path, options)
         else
-          uri = "#{BASE_URI}#{path}?#{hash_to_query(options)}"
-          response = @access_token.send(method, uri, @headers)
+          response = request_with_query_string(method, path, options)
         end
+
         if response.code.to_i < 200 or response.code.to_i >= 400
           raise Activite::Error::ClientConfigurationError, response.body
         end
+
         body = JSON.parse(response.body)
         if body['status'].to_i != 0
           raise Activite::Error::InvalidResponseError, "#{body['status']} - #{body['error']}"
         end
-        if body.has_key? 'body'
-          body['body']
-        else
-          body
-        end
+
+        body['body'] ||= body
+        body['body']
       end
     end
   end
