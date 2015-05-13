@@ -4,6 +4,7 @@ module Activite
   module HTTP
     module OAuthClient
       attr_accessor :consumer_key, :consumer_secret, :token, :secret
+      attr_writer :consumer
 
       DEFAULT_OPTIONS = {
         site:              'https://oauth.withings.com',
@@ -13,7 +14,7 @@ module Activite
         access_token_path:  '/account/access_token',
         scheme:             :query_string
       }
-    
+
       def request_token(options = {})
         consumer.get_request_token(options)
       end
@@ -34,13 +35,13 @@ module Activite
       def existing_access_token(token, secret)
         OAuth::AccessToken.new(consumer, token, secret)
       end
-      
+
       def connected?
         !@access_token.nil?
       end
 
       private
-      
+
       def consumer
         @consumer ||= OAuth::Consumer.new(@consumer_key, @consumer_secret, DEFAULT_OPTIONS)
       end
