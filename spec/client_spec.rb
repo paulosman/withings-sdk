@@ -38,7 +38,7 @@ describe Activite::Client do
       end
     end
   end
-  
+
   describe '#user_agent' do
     it 'defaults to WithingsRubyGem/version' do
       expect(subject.user_agent).to eq("WithingsRubyGem/#{Activite::VERSION}")
@@ -166,7 +166,66 @@ describe Activite::Client do
       end
     end
   end
-  
+
+  describe 'Notifications' do
+    let (:user_id) { 123 }
+    let (:opts) { Hash['callbackurl', 'http://example.com', 'comment', 'foo']}
+
+    describe '#create_notification' do
+      let (:result) { configured_client.create_notification(user_id, opts) }
+
+      before do
+        stub_request(:post, /.*wbsapi.*/).
+          with(body: hash_including({action: 'subscribe'})).
+          to_return(body: fixture('empty_successful_response.json'))
+      end
+
+      context 'with properly configured client' do
+        it 'should return a single Activite::Response object' do
+          expect(result).to be_a Activite::Response
+        end
+        it 'should have status 0' do
+          expect(result.status).to equal(0)
+        end
+      end
+    end
+
+    describe '#list_notifications' do
+      let (:result) { configured_client.list_notifications(user_id) }
+
+      before do
+        stub_request(:get, /.*wbsapi.*/).
+          with(query: hash_including({action: 'list'})).
+          to_return(body: fixture('notifications.json'))
+      end
+
+      context 'with properly configured client' do
+        it 'should return an array of Activite::Notification objects' do
+          expect(result.first).to be_a Activite::Notification
+        end
+      end
+    end
+
+    describe '#revoke_notification' do
+      let (:result) { configured_client.revoke_notification(user_id, opts) }
+
+      before do
+        stub_request(:get, /.*wbsapi.*/).
+          with(query: hash_including({action: 'revoke'})).
+          to_return(body: fixture('empty_successful_response.json'))
+      end
+
+      context 'with properly configured client' do
+        it 'should return a single Activite::Response object' do
+          expect(result).to be_a Activite::Response
+        end
+        it 'should have status 0' do
+          expect(result.status).to equal(0)
+        end
+      end
+    end
+  end
+
   context 'with an initialized client' do
     before do
       @client = Activite::Client.new do |config|
