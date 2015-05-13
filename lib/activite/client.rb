@@ -2,8 +2,10 @@ require 'activite/error'
 require 'activite/http/request'
 require 'activite/activity'
 require 'activite/measurement_group'
+require 'activite/notification'
 require 'activite/sleep_series'
 require 'activite/sleep_summary'
+require 'activite/response'
 
 module Activite
   class Client
@@ -121,6 +123,55 @@ module Activite
       }.merge(options))
     end
 
+    # Register a webhook / notification with the Withings API. This allows
+    # you to be notified when new data is available for a user.
+    #
+    # @param user_id [Integer]
+    # @param options [Hash]
+    #
+    # @return [Activite::Response]
+    def create_notification(user_id, options = {})
+      perform_request(:post, '/notify', Activite::Response, nil, {
+        action: 'subscribe'
+      }.merge(options))
+    end
+
+    # Get information about a specific webhook / notification.
+    #
+    # @param user_id [Integer]
+    # @param options [Hash]
+    #
+    # @return [Activite::Notification]
+    def get_notification(user_id, options = {})
+      perform_request(:get, '/notify', Activite::Notification, nil, {
+        action: 'get'
+      }.merge(options))
+    end
+
+    # Return a list of registered webhooks / notifications.
+    #
+    # @param user_id [Integer]
+    # @param options [Hash]
+    #
+    # @return [Array<Activite::Notification>]
+    def list_notifications(user_id, options = {})
+      perform_request(:get, '/notify', Activite::Notification, 'profiles', {
+        action: 'list'
+      }.merge(options))
+    end
+
+    # Revoke previously subscribed webhook / notification.
+    #
+    # @param user_id [Integer]
+    # @param options [Hash]
+    #
+    # @return [Activite::Response]
+    def revoke_notification(user_id, options = {})
+      perform_request(:get, '/notify', Activite::Response, nil, {
+        action: 'revoke'
+      }.merge(options))
+    end
+
     private
 
     # Helper function that handles all API requests
@@ -139,7 +190,9 @@ module Activite
       options = Activite::Utils.normalize_date_params(options)
       request = Activite::HTTP::Request.new(@access_token, { 'User-Agent' => user_agent })
       response = request.send(http_method, path, options)
-      if response.has_key? key
+      if key.nil?
+        klass.new(response)
+      elsif response.has_key? key
         response[key].collect do |element|
           klass.new(element)
         end
