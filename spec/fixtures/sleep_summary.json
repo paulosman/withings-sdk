@@ -1,1 +1,88 @@
-{"status":0,"body":{"series":[{"id":29616737,"timezone":"America\/Toronto","model":52,"startdate":1424497620,"enddate":1424524325,"date":"2015-02-21","data":{"deepsleepduration":9000,"wakeupduration":240,"lightsleepduration":17460,"durationtosleep":60,"wakeupcount":1},"modified":1424524442},{"id":29616965,"timezone":"America\/Toronto","model":52,"startdate":1424524325,"enddate":1424524680,"date":"2015-02-21","data":{"deepsleepduration":0,"wakeupduration":300,"lightsleepduration":60,"durationtosleep":0,"wakeupcount":1},"modified":1424524699},{"id":29619831,"timezone":"America\/Toronto","model":52,"startdate":1424524680,"enddate":1424524740,"date":"2015-02-21","data":{"deepsleepduration":0,"wakeupduration":60,"lightsleepduration":0,"durationtosleep":60,"wakeupcount":0},"modified":1424528055},{"id":29678091,"timezone":"America\/Toronto","model":52,"startdate":1424587200,"enddate":1424609280,"date":"2015-02-22","data":{"deepsleepduration":4740,"wakeupduration":180,"lightsleepduration":17160,"durationtosleep":180,"wakeupcount":0},"modified":1424609347},{"id":29680911,"timezone":"America\/Toronto","model":52,"startdate":1424609280,"enddate":1424609880,"date":"2015-02-22","data":{"deepsleepduration":0,"wakeupduration":240,"lightsleepduration":360,"durationtosleep":0,"wakeupcount":1},"modified":1424612634}],"more":false}}
+{
+    "body": {
+        "more": false, 
+        "series": [
+            {
+                "data": {
+                    "deepsleepduration": 9000, 
+                    "durationtosleep": 60, 
+                    "lightsleepduration": 17460, 
+                    "wakeupcount": 1, 
+                    "wakeupduration": 240
+                }, 
+                "date": "2015-02-21", 
+                "enddate": 1424524325, 
+                "id": 29616737, 
+                "model": 52, 
+                "modified": 1424524442, 
+                "startdate": 1424497620, 
+                "timezone": "America/Toronto"
+            }, 
+            {
+                "data": {
+                    "deepsleepduration": 0, 
+                    "durationtosleep": 0, 
+                    "lightsleepduration": 60, 
+                    "wakeupcount": 1, 
+                    "wakeupduration": 300
+                }, 
+                "date": "2015-02-21", 
+                "enddate": 1424524680, 
+                "id": 29616965, 
+                "model": 52, 
+                "modified": 1424524699, 
+                "startdate": 1424524325, 
+                "timezone": "America/Toronto"
+            }, 
+            {
+                "data": {
+                    "deepsleepduration": 0, 
+                    "durationtosleep": 60, 
+                    "lightsleepduration": 0, 
+                    "wakeupcount": 0, 
+                    "wakeupduration": 60
+                }, 
+                "date": "2015-02-21", 
+                "enddate": 1424524740, 
+                "id": 29619831, 
+                "model": 52, 
+                "modified": 1424528055, 
+                "startdate": 1424524680, 
+                "timezone": "America/Toronto"
+            }, 
+            {
+                "data": {
+                    "deepsleepduration": 4740, 
+                    "durationtosleep": 180, 
+                    "lightsleepduration": 17160, 
+                    "wakeupcount": 0, 
+                    "wakeupduration": 180
+                }, 
+                "date": "2015-02-22", 
+                "enddate": 1424609280, 
+                "id": 29678091, 
+                "model": 52, 
+                "modified": 1424609347, 
+                "startdate": 1424587200, 
+                "timezone": "America/Toronto"
+            }, 
+            {
+                "data": {
+                    "deepsleepduration": 0, 
+                    "durationtosleep": 0, 
+                    "lightsleepduration": 360, 
+                    "wakeupcount": 1, 
+                    "wakeupduration": 240
+                }, 
+                "date": "2015-02-22", 
+                "enddate": 1424609880, 
+                "id": 29680911, 
+                "model": 52, 
+                "modified": 1424612634, 
+                "startdate": 1424609280, 
+                "timezone": "America/Toronto"
+            }
+        ]
+    }, 
+    "status": 0
+}

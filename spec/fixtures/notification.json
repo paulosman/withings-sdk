@@ -1,1 +1,9 @@
-{"status":0, "body":{"appli":1, "callbackurl":"http://requestb.in/qatn7cqa", "expires":2147483647, "comment":"My first test notification"}}
+{
+    "body": {
+        "appli": 1, 
+        "callbackurl": "http://requestb.in/qatn7cqa", 
+        "comment": "My first test notification", 
+        "expires": 2147483647
+    }, 
+    "status": 0
+}
