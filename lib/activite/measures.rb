@@ -17,7 +17,7 @@ module Activite
     #
     # Different measurement types
     #
-    
+
     Weight = Class.new(self) do |cls|
       # Return weight measurement in kilograms (default unit)
       #
@@ -33,12 +33,12 @@ module Activite
         (@value * 2.20462).round(3)
       end
     end
-    
+
     Height = Class.new(self)
     Pulse  = Class.new(self)
 
-    FatFreeMass   = Class.new(Weight)
-    FatMassWeight = Class.new(Weight)
+    FatFreeMass   = Class.new(self)
+    FatMassWeight = Class.new(self)
     FatRatio      = Class.new(self)
   end
 end
