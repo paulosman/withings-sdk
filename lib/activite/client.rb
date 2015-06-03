@@ -92,6 +92,24 @@ module Activite
       }.merge(options))
     end
 
+    # Return a list of weight body measurements
+    #
+    # @param user_id [Integer]
+    # @param options [Hash]
+    #
+    # @return [Array<Activite::Measure::Weight>]
+    def weight(user_id, options = {})
+      groups = body_measurements(user_id, options)
+      weights = []
+      groups.each do |group|
+        group.measures.each do |measure|
+          next if !measure.is_a? Activite::Measure::Weight
+          weights << Activite::Measure::Weight.new(measure.attrs.merge('weighed_at' => group.date))
+        end
+      end
+      weights
+    end
+
     # Get details about a user's sleep
     #
     # @param user_id [Integer]
