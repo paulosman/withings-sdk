@@ -63,5 +63,10 @@ module Activite
         d
       end
     end
+
+    def self.to_ymdhms(d)
+      DateTime.strptime(d.to_s, '%s').strftime('%Y-%m-%d %H:%M:%S')
+    end
+
   end
 end
