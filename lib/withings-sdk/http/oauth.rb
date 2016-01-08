@@ -1,6 +1,6 @@
 require 'oauth'
 
-module Activite
+module WithingsSDK
   module HTTP
     module OAuthClient
       attr_accessor :consumer_key, :consumer_secret, :token, :secret

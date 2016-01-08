@@ -1,6 +1,6 @@
-describe Activite::Measure::Weight do
+describe WithingsSDK::Measure::Weight do
 
-  let (:subject) { Activite::Measure::Weight.new(value: 87893, unit: -3) }
+  let (:subject) { WithingsSDK::Measure::Weight.new(value: 87893, unit: -3) }
 
   it 'should normalize the value based on the value and the unit' do
     expect(subject.value).to eq(87.893)
@@ -13,5 +13,5 @@ describe Activite::Measure::Weight do
   it 'should return the value in pounds' do
     expect(subject.in_lb).to eq(193.771)
   end
-    
+
 end

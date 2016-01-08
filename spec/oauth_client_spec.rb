@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Activite::HTTP::OAuthClient do
+describe WithingsSDK::HTTP::OAuthClient do
   subject do
-    Activite::Client.new do |config|
+    WithingsSDK::Client.new do |config|
       config.consumer_key = 'foo'
       config.consumer_secret = 'bar'
       config.token = 'secret'

@@ -2,7 +2,7 @@ require 'uri'
 require 'json'
 require 'net/http'
 
-module Activite
+module WithingsSDK
   module HTTP
     BASE_URI = 'https://wbsapi.withings.net'
 
@@ -45,12 +45,12 @@ module Activite
         end
 
         if response.code.to_i < 200 or response.code.to_i >= 400
-          raise Activite::Error::ClientConfigurationError, response.body
+          raise WithingsSDK::Error::ClientConfigurationError, response.body
         end
 
         body = JSON.parse(response.body)
         if body['status'].to_i != 0
-          raise Activite::Error::InvalidResponseError, "#{body['status']} - #{body['error']}"
+          raise WithingsSDK::Error::InvalidResponseError, "#{body['status']} - #{body['error']}"
         end
 
         body['body'] ||= body

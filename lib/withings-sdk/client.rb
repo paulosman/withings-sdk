@@ -1,15 +1,15 @@
-require 'activite/error'
-require 'activite/http/request'
-require 'activite/activity'
-require 'activite/measurement_group'
-require 'activite/notification'
-require 'activite/sleep_series'
-require 'activite/sleep_summary'
-require 'activite/response'
+require 'withings-sdk/error'
+require 'withings-sdk/http/request'
+require 'withings-sdk/activity'
+require 'withings-sdk/measurement_group'
+require 'withings-sdk/notification'
+require 'withings-sdk/sleep_series'
+require 'withings-sdk/sleep_summary'
+require 'withings-sdk/response'
 
-module Activite
+module WithingsSDK
   class Client
-    include Activite::HTTP::OAuthClient
+    include WithingsSDK::HTTP::OAuthClient
 
     attr_writer :user_agent
 
@@ -28,10 +28,10 @@ module Activite
     # @option options [String] :secret The access token secret (if you've stored it)
     #
     # @example User has not yet authorized access to their Withings account
-    #   client = Activite::Client.new({ consumer_key: your_key, consumer_secret: your_secret })
+    #   client = WithingsSDK::Client.new({ consumer_key: your_key, consumer_secret: your_secret })
     #
     # @example User has authorized access to their Withings account
-    #   client = Activite::Client.new({
+    #   client = WithingsSDK::Client.new({
     #     consumer_key: your_key,
     #     consumer_secret: your_secret,
     #     token: your_access_token,
@@ -39,14 +39,14 @@ module Activite
     #   })
     #
     # @example You can also pass parameters as a block
-    #   client = Activite::Client.new do |config|
+    #   client = WithingsSDK::Client.new do |config|
     #     config.consumer_key = your_key
     #     config.consumer_secret = your_secret
     #     config.token = token
     #     config.secret = secret
     #   end
     #
-    # @return [Activite::Client]
+    # @return [WithingsSDK::Client]
     def initialize(options = {})
       options.each do |key, value|
         instance_variable_set("@#{key}", value)
@@ -63,7 +63,7 @@ module Activite
     #
     # @return [String]
     def user_agent
-      @user_agent ||= "WithingsRubyGem/#{Activite::VERSION}"
+      @user_agent ||= "WithingsRubyGem/#{WithingsSDK::VERSION}"
     end
 
     # Get a list of activity measures for the specified user
@@ -71,9 +71,9 @@ module Activite
     # @param user_id [Integer]
     # @param options [Hash]
     #
-    # @return [Array<Activite::Activity>]
+    # @return [Array<WithingsSDK::Activity>]
     def activities(user_id, options = {})
-      perform_request(:get, '/v2/measure', Activite::Activity, 'activities', {
+      perform_request(:get, '/v2/measure', WithingsSDK::Activity, 'activities', {
         action: 'getactivity',
         userid: user_id
       }.merge(options))
@@ -84,9 +84,9 @@ module Activite
     # @param user_id [Integer]
     # @param options [Hash]
     #
-    # @return [Array<Activite::MeasurementGroup>]
+    # @return [Array<WithingsSDK::MeasurementGroup>]
     def body_measurements(user_id, options = {})
-      perform_request(:get, '/measure', Activite::MeasurementGroup, 'measuregrps', {
+      perform_request(:get, '/measure', WithingsSDK::MeasurementGroup, 'measuregrps', {
         action: 'getmeas',
         userid: user_id
       }.merge(options))
@@ -97,14 +97,14 @@ module Activite
     # @param user_id [Integer]
     # @param options [Hash]
     #
-    # @return [Array<Activite::Measure::Weight>]
+    # @return [Array<WithingsSDK::Measure::Weight>]
     def weight(user_id, options = {})
       groups = body_measurements(user_id, options)
       weights = []
       groups.each do |group|
         group.measures.each do |measure|
-          next if !measure.is_a? Activite::Measure::Weight
-          weights << Activite::Measure::Weight.new(measure.attrs.merge('weighed_at' => group.date))
+          next if !measure.is_a? WithingsSDK::Measure::Weight
+          weights << WithingsSDK::Measure::Weight.new(measure.attrs.merge('weighed_at' => group.date))
         end
       end
       weights
@@ -115,9 +115,9 @@ module Activite
     # @param user_id [Integer]
     # @param options [Hash]
     #
-    # @return [Array<Activite::Sleep>]
+    # @return [Array<WithingsSDK::Sleep>]
     def sleep_series(user_id, options = {})
-      perform_request(:get, '/v2/sleep', Activite::SleepSeries, 'series', {
+      perform_request(:get, '/v2/sleep', WithingsSDK::SleepSeries, 'series', {
         action: 'get',
         userid: user_id
       }.merge(options))
@@ -134,9 +134,9 @@ module Activite
     # @param user_id [Intger]
     # @param options [Hash]
     #
-    # @return [Array<Activite::SleepSummary>]
+    # @return [Array<WithingsSDK::SleepSummary>]
     def sleep_summary(user_id, options = {})
-      perform_request(:get, '/v2/sleep', Activite::SleepSummary, 'series', {
+      perform_request(:get, '/v2/sleep', WithingsSDK::SleepSummary, 'series', {
         action: 'getsummary'
       }.merge(options))
     end
@@ -147,9 +147,9 @@ module Activite
     # @param user_id [Integer]
     # @param options [Hash]
     #
-    # @return [Activite::Response]
+    # @return [WithingsSDK::Response]
     def create_notification(user_id, options = {})
-      perform_request(:post, '/notify', Activite::Response, nil, {
+      perform_request(:post, '/notify', WithingsSDK::Response, nil, {
         action: 'subscribe'
       }.merge(options))
     end
@@ -159,9 +159,9 @@ module Activite
     # @param user_id [Integer]
     # @param options [Hash]
     #
-    # @return [Activite::Notification]
+    # @return [WithingsSDK::Notification]
     def get_notification(user_id, options = {})
-      perform_request(:get, '/notify', Activite::Notification, nil, {
+      perform_request(:get, '/notify', WithingsSDK::Notification, nil, {
         action: 'get'
       }.merge(options))
     end
@@ -171,9 +171,9 @@ module Activite
     # @param user_id [Integer]
     # @param options [Hash]
     #
-    # @return [Array<Activite::Notification>]
+    # @return [Array<WithingsSDK::Notification>]
     def list_notifications(user_id, options = {})
-      perform_request(:get, '/notify', Activite::Notification, 'profiles', {
+      perform_request(:get, '/notify', WithingsSDK::Notification, 'profiles', {
         action: 'list'
       }.merge(options))
     end
@@ -183,9 +183,9 @@ module Activite
     # @param user_id [Integer]
     # @param options [Hash]
     #
-    # @return [Activite::Response]
+    # @return [WithingsSDK::Response]
     def revoke_notification(user_id, options = {})
-      perform_request(:get, '/notify', Activite::Response, nil, {
+      perform_request(:get, '/notify', WithingsSDK::Response, nil, {
         action: 'revoke'
       }.merge(options))
     end
@@ -203,10 +203,10 @@ module Activite
     # @return [Array<Object>]
     def perform_request(http_method, path, klass, key, options = {})
       if @consumer_key.nil? || @consumer_secret.nil?
-        raise Activite::Error::ClientConfigurationError, "Missing consumer_key or consumer_secret"
+        raise WithingsSDK::Error::ClientConfigurationError, "Missing consumer_key or consumer_secret"
       end
-      options = Activite::Utils.normalize_date_params(options)
-      request = Activite::HTTP::Request.new(@access_token, { 'User-Agent' => user_agent })
+      options = WithingsSDK::Utils.normalize_date_params(options)
+      request = WithingsSDK::HTTP::Request.new(@access_token, { 'User-Agent' => user_agent })
       response = request.send(http_method, path, options)
       if key.nil?
         klass.new(response)
