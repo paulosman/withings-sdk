@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'activite/version'
+require 'withings-sdk/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "activite"
-  spec.version       = Activite::VERSION
+  spec.name          = "withings-sdk"
+  spec.version       = WithingsSDK::VERSION
   spec.authors       = ["Paul Osman"]
   spec.email         = ["paul@eval.ca"]
 

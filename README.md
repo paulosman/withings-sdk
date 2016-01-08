@@ -1,26 +1,26 @@
 # Withings API Ruby Gem
 
-[![Build Status](http://img.shields.io/travis/paulosman/activite.svg)][travis]
-[![Code Climate](https://codeclimate.com/github/paulosman/activite/badges/gpa.svg)][codeclimate]
-[![Test Coverage](https://codeclimate.com/github/paulosman/activite/badges/coverage.svg)][coverage]
-[![Dependency Status](https://gemnasium.com/paulosman/activite.svg)][gemnasium]
-[![Gem Version](https://badge.fury.io/rb/activite.svg)][gemversion]
+[![Build Status](http://img.shields.io/travis/paulosman/withings-sdk.svg)][travis]
+[![Code Climate](https://codeclimate.com/github/paulosman/withings-sdk/badges/gpa.svg)][codeclimate]
+[![Test Coverage](https://codeclimate.com/github/paulosman/withings-sdk/badges/coverage.svg)][coverage]
+[![Dependency Status](https://gemnasium.com/paulosman/withings-sdk.svg)][gemnasium]
+[![Gem Version](https://badge.fury.io/rb/withings-sdk.svg)][gemversion]
 
 This gem provides access to data collected by [Withings](http://withings.com/) devices through
 their [HTTP API](https://oauth.withings.com/api/doc).
 
-[travis]: https://travis-ci.org/paulosman/activite
-[codeclimate]: https://codeclimate.com/github/paulosman/activite
-[coverage]: https://codeclimate.com/github/paulosman/activite
-[gemnasium]: https://gemnasium.com/paulosman/activite
-[gemversion]: https://badge.fury.io/rb/activite
+[travis]: https://travis-ci.org/paulosman/withings-sdk
+[codeclimate]: https://codeclimate.com/github/paulosman/withings-sdk
+[coverage]: https://codeclimate.com/github/paulosman/withings-sdk
+[gemnasium]: https://gemnasium.com/paulosman/withings-sdk
+[gemversion]: https://badge.fury.io/rb/withings-sdk
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'activite'
+gem 'withings-sdk'
 ```
 
 And then execute:
@@ -29,7 +29,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install activite
+    $ gem install withings-sdk
 
 ## Usage
 
@@ -50,7 +50,7 @@ The following examples assume you are using a web framework such as [Sinatra][si
 [sinatra]: http://www.sinatrarb.com/ "Sinatra"
 
 ```ruby
-client = Activite::Client.new({
+client = WithingsSDK::Client.new({
   consumer_key: 'YOUR_CONSUMER_KEY',
   consumer_secret: 'YOUR_CONSUMER_SECRET'
 })
@@ -69,7 +69,7 @@ to the callback URL you specified with the following parameters in the query str
 you'll need them later.
 
 ```ruby
-client = Activite::Client.new({
+client = WithingsSDK::Client.new({
   consumer_key: 'YOUR_CONSUMER_KEY',
   consumer_secret: 'YOUR_CONSUMER_SECRET'
 })
@@ -81,10 +81,10 @@ client.access_token(request_token.token, request_token.secret, {
 
 ## Making Requests
 
-Now that you have an authorized access token, you can create a ```Activite::Client``` instance:
+Now that you have an authorized access token, you can create a ```WithingsSDK::Client``` instance:
 
 ```ruby
-client = Activite::Client.new do |config|
+client = WithingsSDK::Client.new do |config|
   config.consumer_key        = 'YOUR_CONSUMER_KEY'
   config.consumer_secret     = 'YOUR_CONSUMER_SECRET'
   config.token               = 'YOUR_ACCESS_TOKEN'
@@ -98,7 +98,7 @@ activity measures, you can use the following example:
 ```ruby
 activities = client.activities(user_id, { startdateymd: '2015-01-01', enddateymd: '2015-02-28' })
 activities.each do |activity|
-  if activity.is_a?(Activite::Activity)
+  if activity.is_a?(WithingsSDK::Activity)
     puts "Date: #{activity.date}, Steps: #{activity.steps}"
   end
 end
@@ -110,7 +110,7 @@ unix epoch. This gem tries to simplify date handling by allowing you to specify 
 ```Date``` or ```DateTime``` instance. For example:
 
 ```ruby
-client = Activite::Client.new { options }
+client = WithingsSDK::Client.new { options }
 sleep_details = client.sleep_series(user_id, {
   startdate: DateTime.new(2015, 2, 20, 12, 0, 0),
   enddate: DateTime.new(2015, 2, 21, 12, 20, 0)
@@ -120,7 +120,7 @@ sleep_details = client.sleep_series(user_id, {
 Or equivalently,
 
 ```ruby
-client = Activite::Client.new { options }
+client = WithingsSDK::Client.new { options }
 sleep_details = client.sleep_series(user_id, {
   startdate: '2015-02-20',
   enddate: '2015-02-21'
@@ -135,7 +135,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-1. Fork it ( https://github.com/paulosman/activite/fork )
+1. Fork it ( https://github.com/paulosman/withings-sdk/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

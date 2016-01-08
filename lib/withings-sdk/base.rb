@@ -1,4 +1,4 @@
-module Activite
+module WithingsSDK
   class Base
     # @return [Hash]
     attr_reader :attrs
@@ -6,7 +6,7 @@ module Activite
     # Initializes a new object with attributes for the values passed to the constructor.
     #
     # @param attrs [Hash]
-    # @return [Activite::Base]
+    # @return [WithingsSDK::Base]
     def initialize(attrs = {})
       @attrs = attrs || {}
       @attrs.each do |key, value|

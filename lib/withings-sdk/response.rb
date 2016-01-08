@@ -1,4 +1,4 @@
-module Activite
+module WithingsSDK
 
   # A Response is used to represent an empty API response with a status
   # code and no additional information.

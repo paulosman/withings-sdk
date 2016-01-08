@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Activite::Base do
-  let (:base) { Activite::Base.new(foo: 'bar') }
+describe WithingsSDK::Base do
+  let (:base) { WithingsSDK::Base.new(foo: 'bar') }
 
   describe '#attrs' do
     it 'returns a hash of attributes' do

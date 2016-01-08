@@ -11,7 +11,7 @@ end
 WebMock.disable_net_connect!(webmock_opts)
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'activite'
+require 'withings-sdk'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |c|

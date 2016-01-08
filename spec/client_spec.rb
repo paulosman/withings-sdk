@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Activite::Client do
+describe WithingsSDK::Client do
 
   let (:configured_client) do
-    Activite::Client.new do |config|
+    WithingsSDK::Client.new do |config|
       config.consumer_key = 'foo'
       config.consumer_secret = 'bar'
       config.token = 'secret'
@@ -14,7 +14,7 @@ describe Activite::Client do
   describe '#initialize' do
     context 'when an access token and secret are specified' do
       it 'should be connected' do
-        client = Activite::Client.new({
+        client = WithingsSDK::Client.new({
           consumer_key: 'foo',
           consumer_secret: 'bar',
           token: 'token',
@@ -41,7 +41,7 @@ describe Activite::Client do
 
   describe '#user_agent' do
     it 'defaults to WithingsRubyGem/version' do
-      expect(subject.user_agent).to eq("WithingsRubyGem/#{Activite::VERSION}")
+      expect(subject.user_agent).to eq("WithingsRubyGem/#{WithingsSDK::VERSION}")
     end
   end
 
@@ -58,15 +58,15 @@ describe Activite::Client do
 
     context 'when no consumer secret is provided' do
       it 'raises an error' do
-        @client = Activite::Client.new({ consumer_key: 'foo' })
-        expect { @client.activities(user_id) }.to raise_error(Activite::Error::ClientConfigurationError)
+        @client = WithingsSDK::Client.new({ consumer_key: 'foo' })
+        expect { @client.activities(user_id) }.to raise_error(WithingsSDK::Error::ClientConfigurationError)
       end
     end
 
     context 'when no consumer key is specified' do
       it 'raises an error' do
-        @client = Activite::Client.new({ consumer_secret: 'foo' })
-        expect { @client.activities(user_id) }.to raise_error(Activite::Error::ClientConfigurationError)
+        @client = WithingsSDK::Client.new({ consumer_secret: 'foo' })
+        expect { @client.activities(user_id) }.to raise_error(WithingsSDK::Error::ClientConfigurationError)
       end
     end
 
@@ -81,7 +81,7 @@ describe Activite::Client do
 
       it 'should return an array of activities' do
         expect(results).to be_an Array
-        expect(results.first).to be_a Activite::Activity
+        expect(results.first).to be_a WithingsSDK::Activity
       end
 
       context 'when one result is returned (a single day)' do
@@ -93,7 +93,7 @@ describe Activite::Client do
         it 'should return an array with one single activity' do
           expect(results).to be_an Array
           expect(results.length).to eq(1)
-          expect(results.first).to be_an Activite::Activity
+          expect(results.first).to be_an WithingsSDK::Activity
         end
       end
     end
@@ -112,13 +112,13 @@ describe Activite::Client do
 
     it 'should return an array of measurement groups' do
       expect(results).to be_an Array
-      expect(results.first).to be_an Activite::MeasurementGroup
+      expect(results.first).to be_an WithingsSDK::MeasurementGroup
     end
 
     context 'each measurement group' do
       it 'should contain measurements of the correct type' do
-        expect(results.first.measures[0]).to be_an Activite::Measure::Pulse
-        expect(results.first.measures[1]).to be_an Activite::Measure::Weight
+        expect(results.first.measures[0]).to be_an WithingsSDK::Measure::Pulse
+        expect(results.first.measures[1]).to be_an WithingsSDK::Measure::Weight
       end
 
       it 'should normalize the values as floats' do
@@ -140,10 +140,10 @@ describe Activite::Client do
     end
 
     context 'with properly configured client' do
-      it 'should return an array of Activite::SleepSeries objects' do
+      it 'should return an array of WithingsSDK::SleepSeries objects' do
         expect(results).to be_an Array
         expect(results.length).to eq(2)
-        expect(results[0]).to be_a Activite::SleepSeries
+        expect(results[0]).to be_a WithingsSDK::SleepSeries
       end
     end
   end
@@ -161,8 +161,8 @@ describe Activite::Client do
     end
 
     context 'with properly configured client' do
-      it 'should return an array of Activite::SleepSummary objects' do
-        expect(results.first).to be_a Activite::SleepSummary
+      it 'should return an array of WithingsSDK::SleepSummary objects' do
+        expect(results.first).to be_a WithingsSDK::SleepSummary
       end
     end
   end
@@ -181,8 +181,8 @@ describe Activite::Client do
       end
 
       context 'with properly configured client' do
-        it 'should return a single Activite::Response object' do
-          expect(result).to be_a Activite::Response
+        it 'should return a single WithingsSDK::Response object' do
+          expect(result).to be_a WithingsSDK::Response
         end
         it 'should have status 0' do
           expect(result.status).to equal(0)
@@ -200,8 +200,8 @@ describe Activite::Client do
       end
 
       context 'with properly configured client' do
-        it 'should return an array of Activite::Notification objects' do
-          expect(result.first).to be_a Activite::Notification
+        it 'should return an array of WithingsSDK::Notification objects' do
+          expect(result.first).to be_a WithingsSDK::Notification
         end
       end
     end
@@ -216,8 +216,8 @@ describe Activite::Client do
       end
 
       context 'with properly configured client' do
-        it 'should return a single Activite::Response object' do
-          expect(result).to be_a Activite::Response
+        it 'should return a single WithingsSDK::Response object' do
+          expect(result).to be_a WithingsSDK::Response
         end
         it 'should have status 0' do
           expect(result.status).to equal(0)
@@ -235,8 +235,8 @@ describe Activite::Client do
       end
 
       context 'with properly configured client' do
-        it 'should return a single Activite::Notification object' do
-          expect(result).to be_a Activite::Notification
+        it 'should return a single WithingsSDK::Notification object' do
+          expect(result).to be_a WithingsSDK::Notification
         end
       end
     end
@@ -244,7 +244,7 @@ describe Activite::Client do
 
   context 'with an initialized client' do
     before do
-      @client = Activite::Client.new do |config|
+      @client = WithingsSDK::Client.new do |config|
         config.consumer_key = 'foo'
         config.consumer_secret = 'bar'
       end
