@@ -128,6 +128,28 @@ describe WithingsSDK::Client do
     end
   end
 
+  describe '#weight' do
+    let (:user_id) { 123 }
+    let (:opts) { Hash['startdate', '2012-01-01', 'enddate', '2013-01-01'] }
+    let (:results) { configured_client.weight(user_id, opts) }
+
+    before do
+      stub_request(:get, /.*wbsapi.*/).
+        with(query: hash_including({action: 'getmeas'})).
+        to_return(body: fixture('body_measurements.json'))
+    end
+
+    it 'should return an array of weight measures' do
+      expect(results).to be_an Array
+      expect(results.first).to be_an WithingsSDK::Measure::Weight
+      expect(results.last).to be_an WithingsSDK::Measure::Weight
+    end
+
+    it 'should return 2 results' do
+      expect(results.length).to eq(2)
+    end
+  end
+
   describe '#sleep_series' do
     let (:user_id) { 123 }
     let (:opts) { Hash['startdate', '2012-01-01', 'enddate', '2013-01-01'] }

@@ -100,14 +100,11 @@ module WithingsSDK
     # @return [Array<WithingsSDK::Measure::Weight>]
     def weight(user_id, options = {})
       groups = body_measurements(user_id, options)
-      weights = []
-      groups.each do |group|
-        group.measures.each do |measure|
-          next if !measure.is_a? WithingsSDK::Measure::Weight
-          weights << WithingsSDK::Measure::Weight.new(measure.attrs.merge('weighed_at' => group.date))
+      groups.map do |group|
+        group.measures.select { |m| m.is_a? WithingsSDK::Measure::Weight }.map do |m|
+          WithingsSDK::Measure::Weight.new(m.attrs.merge('weighed_at' => group.date))
         end
-      end
-      weights
+      end.flatten
     end
 
     # Get details about a user's sleep

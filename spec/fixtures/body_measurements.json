@@ -2,22 +2,39 @@
     "body": {
         "measuregrps": [
             {
-                "grpid": 123, 
+                "grpid": 123,
+                "date": 2147483647,
                 "measures": [
                     {
-                        "type": 11, 
-                        "unit": 0, 
+                        "type": 11,
+                        "unit": 0,
                         "value": 70
-                    }, 
+                    },
                     {
-                        "type": 1, 
-                        "unit": -3, 
+                        "type": 1,
+                        "unit": -3,
                         "value": 87839
                     }
                 ]
+            },
+            {
+                "grpid": 432,
+                "date": 21749343434,
+                "measures": [
+                    {
+                        "type": 2,
+                        "unit": 0,
+                        "value": 70
+                    },
+                    {
+                        "type": 1,
+                        "unit": -3,
+                        "value": 87820
+                    }
+                ]
             }
-        ], 
+        ],
         "updatetime": 123
-    }, 
+    },
     "status": 0
 }
